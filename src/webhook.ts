@@ -1,4 +1,4 @@
-import { editMessageReplyMarkup, sendPhoto } from './tgApi';
+import { answerCallbackQuery, editMessageReplyMarkup, sendPhoto } from './tgApi';
 import { InlineKeyboardMarkup, Update } from './types';
 
 export default async function webhook(request: Request, token: KVNamespace, ctx: ExecutionContext) {
@@ -36,7 +36,7 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 	}
 
 	if (update.callback_query) {
-		const { inline_message_id, data } = update.callback_query;
+		const { id, inline_message_id, data } = update.callback_query;
 		if (data === 'normi') {
 			const inlineKeyboard: InlineKeyboardMarkup = {
 				inline_keyboard: [
@@ -47,6 +47,7 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 					],
 				],
 			};
+			await answerCallbackQuery(robotToken, id);
 			await editMessageReplyMarkup(robotToken, undefined, undefined, inline_message_id, inlineKeyboard);
 		}
 	}

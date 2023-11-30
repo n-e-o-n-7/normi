@@ -73,3 +73,15 @@ export function editMessageReplyMarkup(
 		},
 	}).then((res) => res.json());
 }
+
+export function answerCallbackQuery(robotToken: string, callback_query_id: string) {
+	return fetch(`https://api.telegram.org/bot${robotToken}/answerCallbackQuery`, {
+		method: 'POST',
+		body: JSON.stringify({
+			callback_query_id,
+		}),
+		headers: {
+			'content-type': 'application/json',
+		},
+	}).then((res) => res.json());
+}

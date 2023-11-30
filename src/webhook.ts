@@ -67,7 +67,7 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 
 				const notion = await createNotion(notionToken);
 
-				await catAppendImage(notion, `https://normi.kokyuu.workers.dev/image?key=${key + name}`);
+				await catAppendImage(notion, `https://r2.kokyuu.workers.dev/${key + name}`);
 				await setDone();
 				break;
 			}

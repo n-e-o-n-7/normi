@@ -18,7 +18,7 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 	if (update.message.chat.type != 'private') return new Response('ok');
 
 	const chatId = update.message.chat.id;
-
+	console.log(update.message);
 	if (update.message.photo) {
 		sendPhoto(robotToken, chatId, update.message.photo[0].file_id);
 	}

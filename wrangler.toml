@@ -2,6 +2,12 @@ name = "normi"
 main = "src/index.ts"
 compatibility_date = "2023-11-21"
 
+[[kv_namespaces]]
+binding = "token"
+id = "1d29f24a747f4cf295c99e2a473228c0"
+preview_id = "ef462bec6b374e6fbe9af57e06f8a0c4"
+
+
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables

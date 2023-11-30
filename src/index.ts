@@ -8,25 +8,24 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import webhook from './webhook';
+import setWebhook from './setWebhook';
 export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-	//
-	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
-	// MY_QUEUE: Queue;
+	token: KVNamespace;
 }
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+		const { pathname } = new URL(request.url);
+		switch (pathname) {
+			case '/setWebhook':
+				return setWebhook(request, env.token, ctx);
+			case '/webhook':
+				return webhook(request, env.token, ctx);
+			default:
+				return new Response('404 not found', {
+					status: 404,
+				});
+		}
 	},
 };

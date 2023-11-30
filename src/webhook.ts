@@ -21,7 +21,8 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 	console.log(update.message);
 	if (update.message.photo) {
 		console.log(update.message.photo[0].file_id);
-		sendPhoto(robotToken, chatId, update.message.photo[0].file_id);
+		const res = await sendPhoto(robotToken, chatId, update.message.photo[0].file_id);
+		console.log(res);
 	}
 
 	return new Response('ok');

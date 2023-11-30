@@ -1,4 +1,4 @@
-import { appendBlock, createNotion } from './notionApi';
+import { catAppendImage, createNotion } from './notionApi';
 import { answerCallbackQuery, editMessageReplyMarkup, sendPhoto } from './tgApi';
 import { InlineKeyboardMarkup, Update } from './types';
 
@@ -56,6 +56,9 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 
 		switch (data) {
 			case 'normi': {
+				const notion = await createNotion(notionToken);
+				const url = ' ';
+				await catAppendImage(notion, url);
 				await setDone();
 				break;
 			}

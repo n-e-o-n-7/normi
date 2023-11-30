@@ -1,8 +1,8 @@
 import { catAppendImage, createNotion } from './notionApi';
-import { answerCallbackQuery, editMessageReplyMarkup, sendPhoto } from './tgApi';
+import { answerCallbackQuery, editMessageReplyMarkup, getFilePath, sendPhoto } from './tgApi';
 import { InlineKeyboardMarkup, Update } from './types';
 
-export default async function webhook(request: Request, token: KVNamespace, ctx: ExecutionContext) {
+export default async function webhook(request: Request, token: KVNamespace, imgs: R2Bucket, ctx: ExecutionContext) {
 	if (request.method != 'POST') return new Response('method not allowed', { status: 405 });
 
 	const robotToken = await token.get('robotToken');
@@ -56,9 +56,14 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 
 		switch (data) {
 			case 'normi': {
+				const path = await getFilePath(robotToken, message?.photo?.pop()?.file_id!);
+				const buffer = await fetch(path).then((res) => res.arrayBuffer());
+				const key = crypto.randomUUID();
+				await imgs.put(key, buffer);
+
 				const notion = await createNotion(notionToken);
-				const url = ' ';
-				await catAppendImage(notion, url);
+
+				await catAppendImage(notion, `https://normi.kokyuu.workers.dev/image?key=${key}`);
 				await setDone();
 				break;
 			}

@@ -11,8 +11,10 @@
 import webhook from './webhook';
 import setWebhook from './setWebhook';
 import setNotion from './setNotion';
+import getImage from './getImage';
 export interface Env {
 	token: KVNamespace;
+	imgs: R2Bucket;
 }
 
 export default {
@@ -22,9 +24,11 @@ export default {
 			case '/setWebhook':
 				return setWebhook(request, env.token, ctx);
 			case '/webhook':
-				return webhook(request, env.token, ctx);
+				return webhook(request, env.token, env.imgs, ctx);
 			case '/setNotion':
 				return setNotion(request, env.token, ctx);
+			case '/image':
+				return getImage(request, env.imgs, ctx);
 			default:
 				return new Response('404 not found', {
 					status: 404,

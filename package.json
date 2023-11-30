@@ -6,6 +6,7 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
+    "bc": "wrangler r2 bucket create notionimg",
     "ckv": "wrangler kv:namespace create token",
     "ckv:preview": "wrangler kv:namespace create token --preview"
   },

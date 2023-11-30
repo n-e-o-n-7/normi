@@ -56,8 +56,9 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 
 		switch (data) {
 			case 'normi': {
-				const file = await getFile(robotToken, message?.photo?.pop()?.file_id!);
-
+				const file_id = message?.photo?.pop()?.file_id;
+				const file = await getFile(robotToken, file_id!);
+				console.log(file_id, file);
 				const buffer = await fetch(`https://api.telegram.org/file/bot${robotToken}/${file.file_path}`).then((res) => res.arrayBuffer());
 
 				const key = crypto.randomUUID();

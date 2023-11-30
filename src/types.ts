@@ -1,6 +1,7 @@
 export interface Update {
 	update_id: number;
-	message: Message;
+	message?: Message;
+	callback_query?: CallbackQuery;
 }
 
 export interface Message {
@@ -44,3 +45,23 @@ export interface Document {}
 export interface Video {}
 
 export interface Voice {}
+
+export interface InlineKeyboardButton {
+	text: string;
+	url?: string;
+	callback_data?: string;
+}
+
+export interface InlineKeyboardMarkup {
+	inline_keyboard: InlineKeyboardButton[][];
+}
+
+export interface CallbackQuery {
+	id: string;
+	from: User;
+	message?: Message;
+	inline_message_id?: string;
+	chat_instance?: string;
+	data?: string;
+	game_short_name?: string;
+}

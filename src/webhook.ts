@@ -1,5 +1,5 @@
-import { sendPhoto } from './tgApi';
-import { Update } from './types';
+import { editMessageReplyMarkup, sendPhoto } from './tgApi';
+import { InlineKeyboardMarkup, Update } from './types';
 
 export default async function webhook(request: Request, token: KVNamespace, ctx: ExecutionContext) {
 	if (request.method != 'POST') return new Response('method not allowed', { status: 405 });
@@ -12,17 +12,43 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 	}
 
 	const update = (await request.json()) as Update;
+	console.log(update);
+	if (update.message) {
+		if (update.message.chat.type != 'private') return new Response('only private');
+		const chatId = update.message.chat.id;
+		if (update.message.photo) {
+			const inlineKeyboard: InlineKeyboardMarkup = {
+				inline_keyboard: [
+					[
+						{
+							text: 'normi',
+							callback_data: 'normi',
+						},
+						{
+							text: 'delicious',
+							callback_data: 'delicious',
+						},
+					],
+				],
+			};
+			await sendPhoto(robotToken, chatId, update.message.photo[0].file_id, inlineKeyboard);
+		}
+	}
 
-	if (!update.message) return new Response('ok');
-
-	if (update.message.chat.type != 'private') return new Response('ok');
-
-	const chatId = update.message.chat.id;
-	console.log(update.message);
-	if (update.message.photo) {
-		console.log(update.message.photo[0].file_id);
-		const res = await sendPhoto(robotToken, chatId, update.message.photo[0].file_id);
-		console.log(res);
+	if (update.callback_query) {
+		const { inline_message_id, data } = update.callback_query;
+		if (data === 'normi') {
+			const inlineKeyboard: InlineKeyboardMarkup = {
+				inline_keyboard: [
+					[
+						{
+							text: 'Done',
+						},
+					],
+				],
+			};
+			await editMessageReplyMarkup(robotToken, undefined, undefined, inline_message_id, inlineKeyboard);
+		}
 	}
 
 	return new Response('ok');

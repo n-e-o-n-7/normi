@@ -7,6 +7,7 @@ export function createNotion(notionToken: string) {
 }
 
 export async function catAppendImage(notion: Client, url: string) {
+	console.log(url);
 	const cat = 'eec3305af072485ab0af32843d2310ea';
 	const action = 'c0139ab2-b056-40f0-866c-348fe6449838';
 	const blocks = await notion.blocks.children.list({

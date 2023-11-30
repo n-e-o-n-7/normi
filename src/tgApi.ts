@@ -56,7 +56,7 @@ export function sendPhoto(robotToken: string, chat_id: number, photo: string, re
 export function editMessageReplyMarkup(
 	robotToken: string,
 	chat_id?: number,
-	message_id?: string,
+	message_id?: number,
 	inline_message_id?: string,
 	reply_markup?: InlineKeyboardMarkup
 ): Promise<any> {

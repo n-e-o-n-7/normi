@@ -36,7 +36,7 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 	}
 
 	if (update.callback_query) {
-		const { id, inline_message_id, data } = update.callback_query;
+		const { id, message, inline_message_id, data } = update.callback_query;
 		if (data === 'normi') {
 			const inlineKeyboard: InlineKeyboardMarkup = {
 				inline_keyboard: [
@@ -47,9 +47,9 @@ export default async function webhook(request: Request, token: KVNamespace, ctx:
 					],
 				],
 			};
-			await answerCallbackQuery(robotToken, id);
-			await editMessageReplyMarkup(robotToken, undefined, undefined, inline_message_id, inlineKeyboard);
+			await editMessageReplyMarkup(robotToken, message?.chat.id, message?.message_id, inline_message_id, inlineKeyboard);
 		}
+		await answerCallbackQuery(robotToken, id);
 	}
 
 	return new Response('ok');

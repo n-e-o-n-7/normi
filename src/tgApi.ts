@@ -38,7 +38,7 @@ export function sendMessage(robotToken: string, chatid: number, msg: string): Pr
 }
 
 export function sendPhoto(robotToken: string, chatid: number, photo: string): Promise<any> {
-	return fetch(`https://api.telegram.org/bot${robotToken}/sendMessage`, {
+	return fetch(`https://api.telegram.org/bot${robotToken}/sendPhoto`, {
 		method: 'POST',
 		body: JSON.stringify({
 			chat_id: chatid,

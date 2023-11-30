@@ -2,7 +2,7 @@ export function setWebhook(workerURL: string, robotToken: string, webhookToken: 
 	return fetch(`https://api.telegram.org/bot${robotToken}/setWebhook`, {
 		method: 'POST',
 		body: JSON.stringify({
-			url: workerURL + '/webhook',
+			url: workerURL,
 			secret_token: webhookToken,
 		}),
 		headers: {

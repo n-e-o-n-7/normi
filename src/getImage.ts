@@ -4,7 +4,7 @@ export default async function getImage(request: Request, imgs: R2Bucket, ctx: Ex
 	if (!key) return new Response('no key');
 
 	const object = await imgs.get(key);
-
+	console.log(object);
 	if (object === null) {
 		return new Response('Object Not Found', { status: 404 });
 	}

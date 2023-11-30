@@ -10,6 +10,7 @@
 
 import webhook from './webhook';
 import setWebhook from './setWebhook';
+import setNotion from './setNotion';
 export interface Env {
 	token: KVNamespace;
 }
@@ -22,6 +23,8 @@ export default {
 				return setWebhook(request, env.token, ctx);
 			case '/webhook':
 				return webhook(request, env.token, ctx);
+			case '/setNotion':
+				return setNotion(request, env.token, ctx);
 			default:
 				return new Response('404 not found', {
 					status: 404,

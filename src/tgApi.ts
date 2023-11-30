@@ -86,7 +86,7 @@ export function answerCallbackQuery(robotToken: string, callback_query_id: strin
 	}).then((res) => res.json());
 }
 
-export function getFilePath(robotToken: string, file_id: string): Promise<string> {
+export function getFile(robotToken: string, file_id: string): Promise<File> {
 	return fetch(`https://api.telegram.org/bot${robotToken}/getFile`, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -95,7 +95,5 @@ export function getFilePath(robotToken: string, file_id: string): Promise<string
 		headers: {
 			'content-type': 'application/json',
 		},
-	})
-		.then((res) => res.json() as Promise<File>)
-		.then((file: File) => `https://api.telegram.org/file/bot${robotToken}/${file.file_path}`);
+	}).then((res) => res.json() as Promise<File>);
 }

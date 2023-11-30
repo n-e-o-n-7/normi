@@ -1,5 +1,5 @@
 import { catAppendImage, createNotion } from './notionApi';
-import { answerCallbackQuery, editMessageReplyMarkup, getFilePath, sendPhoto } from './tgApi';
+import { answerCallbackQuery, editMessageReplyMarkup, getFile, sendPhoto } from './tgApi';
 import { InlineKeyboardMarkup, Update } from './types';
 
 export default async function webhook(request: Request, token: KVNamespace, imgs: R2Bucket, ctx: ExecutionContext) {
@@ -56,14 +56,17 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 
 		switch (data) {
 			case 'normi': {
-				const path = await getFilePath(robotToken, message?.photo?.pop()?.file_id!);
-				const buffer = await fetch(path).then((res) => res.arrayBuffer());
+				const file = await getFile(robotToken, message?.photo?.pop()?.file_id!);
+
+				const buffer = await fetch(`https://api.telegram.org/file/bot${robotToken}/${file.file_path}`).then((res) => res.arrayBuffer());
+
 				const key = crypto.randomUUID();
-				await imgs.put(key, buffer);
+				const name = file.file_path.split('/').pop();
+				await imgs.put(key + name, buffer);
 
 				const notion = await createNotion(notionToken);
 
-				await catAppendImage(notion, `https://normi.kokyuu.workers.dev/image?key=${key}`);
+				await catAppendImage(notion, `https://normi.kokyuu.workers.dev/image?key=${key + name}`);
 				await setDone();
 				break;
 			}

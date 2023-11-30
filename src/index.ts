@@ -20,19 +20,24 @@ export interface Env {
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const { pathname } = new URL(request.url);
-		switch (pathname) {
-			case '/setWebhook':
-				return setWebhook(request, env.token, ctx);
-			case '/webhook':
-				return webhook(request, env.token, env.imgs, ctx);
-			case '/setNotion':
-				return setNotion(request, env.token, ctx);
-			case '/image':
-				return getImage(request, env.imgs, ctx);
-			default:
-				return new Response('404 not found', {
-					status: 404,
-				});
+		try {
+			switch (pathname) {
+				case '/setWebhook':
+					return setWebhook(request, env.token, ctx);
+				case '/webhook':
+					return webhook(request, env.token, env.imgs, ctx);
+				case '/setNotion':
+					return setNotion(request, env.token, ctx);
+				case '/image':
+					return getImage(request, env.imgs, ctx);
+				default:
+					return new Response('404 not found', {
+						status: 404,
+					});
+			}
+		} catch (e) {
+			console.log(e);
 		}
+		return new Response('okk');
 	},
 };

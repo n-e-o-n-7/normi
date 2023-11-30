@@ -95,5 +95,7 @@ export function getFile(robotToken: string, file_id: string): Promise<File> {
 		headers: {
 			'content-type': 'application/json',
 		},
-	}).then((res) => res.json() as Promise<File>);
+	})
+		.then((res) => res.json())
+		.then((res: any) => res.result as File);
 }

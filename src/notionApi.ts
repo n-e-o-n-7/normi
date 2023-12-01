@@ -50,6 +50,7 @@ export async function catAppendImage(notion: Client, url: string) {
 										children: [
 											{
 												image: {
+													type: 'external',
 													external: {
 														url,
 													},
@@ -80,6 +81,7 @@ export async function catAppendImage(notion: Client, url: string) {
 				children: [
 					{
 						image: {
+							type: 'external',
 							external: {
 								url,
 							},
@@ -137,6 +139,7 @@ export async function catAppendImage(notion: Client, url: string) {
 									children: [
 										{
 											image: {
+												type: 'external',
 												external: {
 													url,
 												},

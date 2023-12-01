@@ -58,15 +58,11 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 			case 'normi': {
 				const file_id = message?.photo?.pop()?.file_id;
 				const file = await getFile(robotToken, file_id!);
-				console.log(file_id, file);
 				const buffer = await fetch(`https://api.telegram.org/file/bot${robotToken}/${file.file_path}`).then((res) => res.arrayBuffer());
-
 				const key = crypto.randomUUID();
 				const name = file.file_path.split('/').pop();
 				await imgs.put(key + name, buffer);
-
 				const notion = await createNotion(notionToken);
-
 				await catAppendImage(notion, `https://r2.kokyuu.workers.dev/${key + name}`);
 				await setDone();
 				break;

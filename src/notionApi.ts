@@ -6,12 +6,9 @@ export function createNotion(notionToken: string) {
 	});
 }
 
-export async function catAppendImage(notion: Client, url: string) {
-	console.log(url);
-	const cat = 'eec3305af072485ab0af32843d2310ea';
-	const action = 'c0139ab2-b056-40f0-866c-348fe6449838';
+export async function pageAppendImage(notion: Client, page: string, after: string, url: string, mentionProps: object) {
 	const blocks = await notion.blocks.children.list({
-		block_id: cat,
+		block_id: page,
 		page_size: 10,
 	});
 
@@ -38,7 +35,7 @@ export async function catAppendImage(notion: Client, url: string) {
 
 		if (insert === -1) {
 			await notion.blocks.children.append({
-				block_id: cat,
+				block_id: page,
 				children: [
 					{
 						object: 'block',
@@ -93,7 +90,7 @@ export async function catAppendImage(notion: Client, url: string) {
 	} else {
 		const date = new Date().toISOString();
 		await notion.blocks.children.append({
-			block_id: cat,
+			block_id: page,
 			children: [
 				{
 					object: 'block',
@@ -103,7 +100,6 @@ export async function catAppendImage(notion: Client, url: string) {
 							{
 								type: 'mention',
 								mention: {
-									type: 'date',
 									date: {
 										start: date,
 										end: null,
@@ -118,15 +114,9 @@ export async function catAppendImage(notion: Client, url: string) {
 									code: false,
 									color: 'default',
 								},
-								plain_text: date,
-								href: null,
 							},
 						],
-						icon: {
-							type: 'emoji',
-							emoji: '😼',
-						},
-						color: 'yellow_background',
+						...mentionProps,
 					},
 				},
 				{
@@ -162,9 +152,33 @@ export async function catAppendImage(notion: Client, url: string) {
 					},
 				},
 			],
-			after: action,
+			after,
 		});
 	}
+}
+
+export async function deliciousAppendImage(notion: Client, url: string) {
+	const delicious = '2b236a1f25914959ac287615f99f579d';
+	const action = '3af57349-7049-4b39-a765-b3af727d0795';
+	await pageAppendImage(notion, delicious, action, url, {
+		icon: {
+			type: 'emoji',
+			emoji: '🥦',
+		},
+		color: 'green_background',
+	});
+}
+
+export async function catAppendImage(notion: Client, url: string) {
+	const cat = 'eec3305af072485ab0af32843d2310ea';
+	const action = 'c0139ab2-b056-40f0-866c-348fe6449838';
+	await pageAppendImage(notion, cat, action, url, {
+		icon: {
+			type: 'emoji',
+			emoji: '😼',
+		},
+		color: 'yellow_background',
+	});
 }
 
 function findFirstIndex<T>(init: number, array: T[], condition: (e: T) => boolean) {

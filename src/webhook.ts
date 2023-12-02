@@ -1,6 +1,6 @@
-import { catAppendImage, createNotion } from './notionApi';
+import { catAppendImage, createNotion, deliciousAppendImage } from './notionApi';
 import { answerCallbackQuery, editMessageReplyMarkup, getFile, sendPhoto } from './tgApi';
-import { InlineKeyboardMarkup, Update } from './types';
+import { InlineKeyboardMarkup, Update, Message } from './types';
 
 export default async function webhook(request: Request, token: KVNamespace, imgs: R2Bucket, ctx: ExecutionContext) {
 	if (request.method != 'POST') return new Response('method not allowed', { status: 405 });
@@ -56,18 +56,16 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 
 		switch (data) {
 			case 'normi': {
-				const file_id = message?.photo?.pop()?.file_id;
-				const file = await getFile(robotToken, file_id!);
-				const buffer = await fetch(`https://api.telegram.org/file/bot${robotToken}/${file.file_path}`).then((res) => res.arrayBuffer());
-				const key = crypto.randomUUID();
-				const name = file.file_path.split('/').pop();
-				await imgs.put(key + name, buffer);
+				const path = await saveFile(message!, robotToken, imgs);
 				const notion = await createNotion(notionToken);
-				await catAppendImage(notion, `https://r2.kokyuu.workers.dev/${key + name}`);
+				await catAppendImage(notion, `https://r2.kokyuu.workers.dev/${path}`);
 				await setDone();
 				break;
 			}
 			case 'delicious': {
+				const path = await saveFile(message!, robotToken, imgs);
+				const notion = await createNotion(notionToken);
+				await deliciousAppendImage(notion, `https://r2.kokyuu.workers.dev/${path}`);
 				await setDone();
 				break;
 			}
@@ -78,4 +76,14 @@ export default async function webhook(request: Request, token: KVNamespace, imgs
 	}
 
 	return new Response('ok');
+}
+
+async function saveFile(message: Message, robotToken: string, imgs: R2Bucket) {
+	const file_id = message.photo?.pop()?.file_id;
+	const file = await getFile(robotToken, file_id!);
+	const buffer = await fetch(`https://api.telegram.org/file/bot${robotToken}/${file.file_path}`).then((res) => res.arrayBuffer());
+	const key = crypto.randomUUID();
+	const name = file.file_path.split('/').pop();
+	await imgs.put(key + name, buffer);
+	return key + name;
 }

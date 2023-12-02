@@ -16,9 +16,10 @@ export async function pageAppendImage(notion: Client, page: string, after: strin
 		return e.type && e.type === 'callout';
 	});
 
-	const callout = blocks.results[index] as any;
-	const time = new Date(callout.callout['rich_text'][0]['plain_text']);
-	if (time.toDateString() === new Date().toDateString()) {
+	if (
+		index != -1 &&
+		new Date((blocks.results[index] as any).callout['rich_text'][0]['plain_text']).toDateString() === new Date().toDateString()
+	) {
 		const last =
 			findFirstIndex(index + 1, blocks.results, (e: any) => {
 				return e.type && e.type != 'column_list';

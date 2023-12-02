@@ -103,7 +103,7 @@ export async function pageAppendImage(notion: Client, page: string, after: strin
 									date: {
 										start: date,
 										end: null,
-										time_zone: 'Asia/Shanghai',
+										time_zone: null,
 									},
 								},
 								annotations: {

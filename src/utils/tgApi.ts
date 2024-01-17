@@ -1,5 +1,3 @@
-import { InlineKeyboardMarkup, File } from './types';
-
 export function setWebhook(workerURL: string, robotToken: string, webhookToken: string): Promise<any> {
 	return fetch(`https://api.telegram.org/bot${robotToken}/setWebhook`, {
 		method: 'POST',

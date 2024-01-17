@@ -1,4 +1,4 @@
-import { setWebhook as setWebhookApi } from './tgApi';
+import { setWebhook as setWebhookApi } from '../utils/tgApi';
 export default async function setWebhook(request: Request, token: KVNamespace, ctx: ExecutionContext) {
 	const PRESHARED_AUTH_HEADER_KEY = 'X-Custom-1K';
 	const PRESHARED_AUTH_HEADER_VALUE = 'pig';

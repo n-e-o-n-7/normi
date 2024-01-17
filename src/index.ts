@@ -8,8 +8,9 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import webhook from './webhook';
-import setWebhook from './setWebhook';
+import webhook from './routes/webhook';
+import setWebhook from './routes/setWebhook';
+
 export interface Env {
 	token: KVNamespace;
 	imgs: R2Bucket;
@@ -31,7 +32,7 @@ export default {
 			}
 		} catch (e) {
 			console.log(e);
+			return new Response(JSON.stringify(e));
 		}
-		return new Response('okk');
 	},
 };

@@ -1,6 +1,5 @@
-import { catAppendImage, createNotion, deliciousAppendImage } from './notionApi';
-import { answerCallbackQuery, editMessageReplyMarkup, getFile, sendPhoto } from './tgApi';
-import { InlineKeyboardMarkup, Update, Message } from './types';
+import { catAppendImage, createNotion, deliciousAppendImage } from '../utils/notionApi';
+import { answerCallbackQuery, editMessageReplyMarkup, getFile, sendPhoto } from '../utils/tgApi';
 
 export default async function webhook(request: Request, token: KVNamespace, imgs: R2Bucket, ctx: ExecutionContext) {
 	if (request.method != 'POST') return new Response('method not allowed', { status: 405 });

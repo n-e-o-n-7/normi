@@ -1,10 +1,10 @@
-export interface Update {
+interface Update {
 	update_id: number;
 	message?: Message;
 	callback_query?: CallbackQuery;
 }
 
-export interface Message {
+interface Message {
 	message_id: number;
 	from?: User;
 	sender_chat?: Chat;
@@ -19,20 +19,18 @@ export interface Message {
 	voice?: Voice;
 }
 
-export interface User {
+interface User {
 	id: number;
 	is_bot: boolean;
 	first_name: string;
 }
 
-export interface Chat {
+interface Chat {
 	id: number;
 	type: 'private' | 'group' | 'supergroup' | 'channel';
 }
 
-export interface Audio {}
-
-export interface PhotoSize {
+interface PhotoSize {
 	file_id: string;
 	file_unique_id: string;
 	width: number;
@@ -40,23 +38,17 @@ export interface PhotoSize {
 	file_size: number;
 }
 
-export interface Document {}
-
-export interface Video {}
-
-export interface Voice {}
-
-export interface InlineKeyboardButton {
+interface InlineKeyboardButton {
 	text: string;
 	url?: string;
 	callback_data?: string;
 }
 
-export interface InlineKeyboardMarkup {
+interface InlineKeyboardMarkup {
 	inline_keyboard: InlineKeyboardButton[][];
 }
 
-export interface CallbackQuery {
+interface CallbackQuery {
 	id: string;
 	from: User;
 	message?: Message;
@@ -66,10 +58,9 @@ export interface CallbackQuery {
 	game_short_name?: string;
 }
 
-
-export interface File {
-    file_id:string,
-    file_unique_id:string,
-    file_size:number,
-    file_path:string
+interface File {
+	file_id: string;
+	file_unique_id: string;
+	file_size: number;
+	file_path: string;
 }
